@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: planner_db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: planner
+  sonarqube:
+    container_name: sonnar_planner
+    image: sonarqube:community
+    ports:
+      - "9000:9000"
