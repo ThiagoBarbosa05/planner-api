@@ -123,7 +123,7 @@ class TripServiceTest {
     }
 
     @Test
-    @DisplayName("Should retrun trip by id")
+    @DisplayName("Should return trip by id")
     void shouldReturnTripById() {
         CreateTripDTO createTripDTO = new CreateTripDTO(
                 "TEST user",

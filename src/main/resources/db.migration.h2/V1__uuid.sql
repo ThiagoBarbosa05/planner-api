@@ -1,0 +1,1 @@
+CREATE ALIAS IF NOT EXISTS gen_random_uuid FOR "com.thiago.planner.utils.TestUtils.generateRandomUUID";

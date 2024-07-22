@@ -1,8 +1,12 @@
 version: "3.8"
 
+networks:
+  pl-network:
+    driver: bridge
+
 services:
   postgres:
-    container_name: planner_db
+    container_name: postgres
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -10,6 +14,20 @@ services:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: planner
+    networks:
+      - pl-network
+  planner-api:
+    build: .
+    container_name: planner-api
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/planner
+    ports:
+      - "8080:8080"
+    networks:
+      - pl-network
+
   sonarqube:
     container_name: sonnar_planner
     image: sonarqube:community
