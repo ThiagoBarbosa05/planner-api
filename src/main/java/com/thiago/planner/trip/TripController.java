@@ -9,6 +9,7 @@ import com.thiago.planner.link.Link;
 import com.thiago.planner.link.LinkService;
 import com.thiago.planner.link.dto.CreateLinkDTO;
 import com.thiago.planner.link.dto.ListLinkResponseDTO;
+import com.thiago.planner.mail.MailService;
 import com.thiago.planner.participant.Participant;
 import com.thiago.planner.participant.ParticipantService;
 import com.thiago.planner.participant.dto.InviteParticipantsDTO;
@@ -26,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,18 +41,23 @@ public class TripController {
     private final ParticipantService participantService;
     private final ActivityService activityService;
     private final LinkService linkService;
+    private final MailService mailService;
+
 
     @Autowired
     public TripController(
             TripService tripService,
             ParticipantService participantService,
             ActivityService activityService,
-            LinkService linkService
+            LinkService linkService,
+            MailService mailService
+
     ) {
         this.tripService = tripService;
         this.participantService = participantService;
         this.activityService = activityService;
         this.linkService = linkService;
+        this.mailService = mailService;
     }
 
     @Tag(name = "Trip")
@@ -71,6 +78,12 @@ public class TripController {
             RegisterParticipantsDTO registerParticipantsDTO = new RegisterParticipantsDTO(createTripDTO.emailsToInvite(), result);
 
             participantService.registerParticipantsToTrip(registerParticipantsDTO);
+
+            this.mailService.sendMail(
+                    createTripDTO.emailsToInvite().toArray(new String[]{""}),
+                    "Confirmar viagem",
+                    "Olá, você foi convidado por " + result.getOwnerName() + " a fazer parte de uma viagem para " + result.getDestination() + ", para confirmar a sua presença é só clicar no link http://localhost:3000/participant/confirm"
+            );
 
             return ResponseEntity.status(201).body(result);
         }
