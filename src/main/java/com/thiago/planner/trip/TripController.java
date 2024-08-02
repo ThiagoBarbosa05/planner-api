@@ -5,6 +5,7 @@ import com.thiago.planner.activity.Activity;
 import com.thiago.planner.activity.ActivityService;
 import com.thiago.planner.activity.dto.CreateActivityDTO;
 import com.thiago.planner.activity.dto.ListActivityResponseDTO;
+import com.thiago.planner.exceptions.ExceptionHandlerController;
 import com.thiago.planner.link.Link;
 import com.thiago.planner.link.LinkService;
 import com.thiago.planner.link.dto.CreateLinkDTO;
@@ -28,11 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/trip")
+@CrossOrigin()
 public class TripController {
 
     private final TripService tripService;
@@ -68,6 +72,7 @@ public class TripController {
         try {
             Trip result = this.tripService.createTrip(createTripDTO);
 
+
             RegisterParticipantsDTO registerParticipantsDTO = new RegisterParticipantsDTO(createTripDTO.emailsToInvite(), result);
 
             participantService.registerParticipantsToTrip(registerParticipantsDTO);
@@ -75,7 +80,8 @@ public class TripController {
             return ResponseEntity.status(201).body(result);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ExceptionHandlerController.handleExceptionResponse(e.getMessage());
         }
     }
 
@@ -97,7 +103,7 @@ public class TripController {
             return ResponseEntity.ok().body(result);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ExceptionHandlerController.handleExceptionResponse(e.getMessage());
         }
     }
 
@@ -163,7 +169,7 @@ public class TripController {
             return ResponseEntity.status(201).body(result);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ExceptionHandlerController.handleExceptionResponse(e.getMessage());
         }
     }
 

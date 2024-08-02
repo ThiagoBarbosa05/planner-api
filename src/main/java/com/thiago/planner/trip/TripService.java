@@ -26,6 +26,7 @@ public class TripService {
         LocalDateTime startsAt = LocalDateTime.parse(createTripDTO.startsAt(), DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime endsAt = LocalDateTime.parse(createTripDTO.endsAt(), DateTimeFormatter.ISO_DATE_TIME);
 
+
         if (ValidDatesForTrip.isCurrentDateEqualOrAfterStartsDate(startsAt)) {
             throw new TripDateIntervalsException("A data de início da viagem não pode ser anterior ou na mesma data atual.");
         }

@@ -46,6 +46,7 @@ public class Trip {
         this.ownerEmail = createTripDTO.ownerEmail();
         this.destination = createTripDTO.destination();
         this.isConfirmed = createTripDTO.isConfirmed();
+
         this.startsAt = LocalDateTime.parse(createTripDTO.startsAt(), DateTimeFormatter.ISO_DATE_TIME);
         this.endsAt = LocalDateTime.parse(createTripDTO.endsAt(), DateTimeFormatter.ISO_DATE_TIME);
     }
