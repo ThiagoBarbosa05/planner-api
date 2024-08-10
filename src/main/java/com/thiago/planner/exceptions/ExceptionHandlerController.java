@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -33,4 +35,10 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(errorMessageDTOList, HttpStatus.BAD_REQUEST);
     }
 
+    public static ResponseEntity<Object> handleExceptionResponse(String errorMessage) {
+        Map<String, String> responseInCaseError = new HashMap<>();
+        responseInCaseError.put("message", errorMessage );
+
+        return  ResponseEntity.badRequest().body(responseInCaseError);
+    }
 }
